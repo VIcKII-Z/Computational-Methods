@@ -75,7 +75,7 @@ def report_2_states(state1, state2):
     date1 = parse_date(average_increase_7_peak(state1))
     date2 = parse_date(average_increase_7_peak(state2))
     sep = (date2 - date1).days
-    print(f'{state1 if sep>=0 else state2} had its highest number of cases {sep} days before {state2 if sep>0 else state1}.')
+    print(f'{state1 if sep>=0 else state2} had its highest number of cases {sep} days before {state2 if sep>=0 else state1}.')
 ```
 ## Test the above function and provide examples of it in use
 To test the above function, I use Colorado and Connecticut. And you could see the result is quite readable and matches the statement in assignment.  
