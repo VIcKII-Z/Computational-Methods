@@ -1,6 +1,6 @@
 # Ex2 @Weijin ZOU
 
-All code blocks and presented results can be tested and viewed in [```HW1-Ex1.ipynb```]()
+All code blocks and presented results can be tested and viewed in [```HW1-Ex2.ipynb```](https://github.com/VIcKII-Z/BIS634/blob/main/Assignment%201/Ex2/HW1-Ex2.ipynb)
 
 ## Examine data. What columns does it have?  How many rows (think: people) does it have?
 
