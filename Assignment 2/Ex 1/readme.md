@@ -109,7 +109,7 @@ patient_tb[patient_tb['age']==84.9982928781625]
 	name	age	gender
 253020	Raymond Leigh	84.998293	male
 ```
-Here the second oldest person is Raymond Leigh, who is 84.9982928781625 years old. When N is not so large and therefore NlogN is not so distictly diffrent from N, or, sorting benefits the downstream pipeline, it is better to sort. Otherwise, if only focusing on who is the second, O(n) method is more efficent.
+Here the second oldest person is Raymond Leigh, who is 84.9982928781625 years old. When N is not so large and therefore NlogN is not so distinctly different from N, or, sorting benefits the downstream pipeline, it is better to sort. Otherwise, if only focusing on who is the second, O(n) method is more efficient.
 
 ## Recall from our discussion of the motivating problem for September 9th that we can search within a sorted list in O(log n) time via bisection. Use bisection on your sorted list (implement this yourself; don't trivialize the problem by using Python's bisect module) to identify the patient who is 41.5 years old. (2 points)
 Use bisection:
