@@ -146,8 +146,11 @@ mid+1
 ## Generalizing the above, write a function that in O(log n) time returns the number of patients who are at least low_age years old but are strictly less than high_age years old. (2 points) Test this function (show your tests) and convince me that this function works. (2 points). (A suggestion: sometimes when you're writing high efficiency algorithms, it helps to make a slower, more obviously correct implementation to compare with for your tests. Be sure your function works both for ages that are and are not in the dataset.)
 
 
-Use bisection ```BinarySearch``` two times for the high bound and low bound of ages. Also, construct a function ```N_search_methd``` with a slower but obviously correct method, which is to itertate throught the list with O(N) time.     
-Finally, construct a random sample generater, which is used for 1000 trials(could be larger if you set another number) to test if the two methods reach the same result.
+Use bisection ```BinarySearch``` two times for the high bound and low bound of ages. Also, construct a function ```N_search_methd``` with a slower but obviously correct method, which is to itertate throught the list with O(N) time.    
+
+Finally, construct a random sample generater ```randomGenerater```, which is used for 1000 trials(could be larger if you set another number) to test if the two methods reach the same result.  
+
+Also, it is noteworthy that ```value check``` is used for the boundary treatment of the binary search.  
 
 ```python
 def BinarySearch(arr, target):
@@ -165,26 +168,55 @@ def age_scale_idf(age_list, high_age, low_age):
     """
     param: age_arr  list of sorted ages
     """
+    # value check
+    if low_age < np.min(age_list):
+        low_age = np.min(age_list)
+    if high_age <= low_age:
+        raise ValueError('low should be smaller than high')
+    
+    # binary search
     high_bound = BinarySearch(age_list, high_age)
     low_bound = BinarySearch(age_list, low_age)
+    
     if age_list[high_bound] >= high_age:
         high_bound +=1
     if age_list[low_bound] < low_age:
         low_bound -=1
     return low_bound-high_bound+1
 
-
 def N_search_methd(age_list, high_age, low_age):
-    high_bound, low_bound = 0, 0
-    for i in range(len(age_list)):
-        if age_list[i] < high_age:
-            high_bound = i
+    
+    # value check
+    if high_age <= low_age:
+        raise ValueError('low should be smaller than high')
+    
+    count = 0
+    for i in age_list:
+        if low_age <= i < high_age:
+            count+=1
+        elif i <  low_age:
             break
-    for i in range(len(age_list)):
-        if age_list[i] < low_age:
-            low_bound = i-1
-            break
-    return low_bound - high_bound + 1
+   
+    return count
+```
+Use one simple sample to check:
+```python
+age_scale_idf(age_list, 40, 20)
+```
+```
+>>> 85524
+```
+Case of boundary overflow:
+```python
+age_scale_idf(age_list, 100, 0)
+```
+```
+>>> 324357
+```
+
+Then use O(N) method to compare with the testing method, and conduct 1000 trials.
+
+```python
         
 for trial in range(10**3):
     random_Generator = 84*np.random.random(2)
@@ -197,22 +229,57 @@ print('1000 tests success')
 ```
 >>> 1000 tests success
 ```
-As the above shows, the tester with the random sample generator goes through all 1000 trials, and those look all fine. You could set the trial number to a even larger one like 1e10000.
+As the above shows, the tester with the random sample generator goes through all 1000 trials, and those look all fine. You could set the trial number to a even larger one like 1e8.
 
 ## Modify the above, including possibly the data structure you're using, to provide a function that returns both the total number of patients in an age range AND the number of males in the age range, all in O(log n) time as measured after any initial data setup. (2 points). Test it (show your tests) and justify that your algorithm works. (2 points)
 
-Divid the DataFrame to two according to the gender, whether is male or not. Call age range identification with bisection function ```age_scale_idf``` twice and return the number in this range respectively. Then we get total number in this range and also the number of male in this range.
+Devide the DataFrame to two according to the gender, whether is male or not. Call age range identification with bisection function ```age_scale_idf``` twice and return the number in this range respectively. Then we get total number in this range and also the number of male in this range.
+
+Also, based on the random sample generator, test the algorithm with O(N) methods for multiple times.
 
 
 ```python
 def age_and_gender(data, low_age, high_age):
+    # value check
+    if low_age >= high_age:
+        raise ValueError('low should be smaller than high')
+    
     data_notmale, data_male = data[data['gender']!='male'], data[data['gender'] == 'male']
     num_notmale, num_male = age_scale_idf(list(data_notmale['age']), high_age, low_age), age_scale_idf(list(data_male['age']), high_age, low_age)
-    return f'Total number of age range between {low_age} and {high_age} is {num_notmale+num_male}, and {num_male} males are in this range. 
+    
+    # algorithm check
+    assert num_notmale == N_search_methd(list(data_notmale['age']), high_age, low_age) and num_male == N_search_methd(list(data_male['age']), high_age, low_age), 'test failed'
+    
+    return f'Total number of age range between {low_age} and {high_age} is {num_notmale+num_male}, and {num_male} males are in this range. '
+    
+    
 ```
-Test it 
+Test it with small part of the data.
 ```python
-age_and_gender(sorted_age, 0.1, 41.5)
+age_and_gender(sorted_age[:10], 41.5, 100)
+```
+```
+>>> 'Total number of age range between 41.5 and 100 is 10, and 4 males are in this range. '
+```
+
+Test it with one sample with the whole data:
+```python
+age_and_gender(sorted_age, 41.5, 100)
 ```
 ```
 >>> 'Total number of age range between 41.5 and 100 is 150471, and 71308 males are in this range. '
+```
+
+Also, test it for multiple times based on random samples.
+```python
+for trial in range(10**3):
+    random_Generator = 100*np.random.random(2)
+    high_age, low_age = np.max(random_Generator), np.min(random_Generator)
+    age_and_gender(sorted_age, low_age, high_age)
+
+print('1000 tests success')
+```
+```
+>>> 1000 tests success
+```
+Still, the result shows the function works well. 
