@@ -287,6 +287,67 @@ Still, the result shows the function works well.
 # EX2 
 All code blocks and presented results can be tested and viewed in [```HW2-Ex2.ipynb```](https://github.com/VIcKII-Z/BIS634/blob/main/Assignment%202/Ex%201/HW2_EX1.ipynb)
 
+## Write code to loop through all 15-mers, subsequences of 15 bases within chromosome 2 (CM000664.2)
+```python
+for chromosome in human_genome:
+    if chromosome.name == "CM000664.2":
+        sequence = str(chromosome.seq).lower().encode('utf8')
+        for i in range(len(sequence) - 15):
+            mers_15 = sequence[i : i + 15]
+            
+```
+## How many total subsequences are there (counting duplicates) that do not contain more than 2 Ns? 
+```python
+for chromosome in human_genome:
+    if chromosome.name == "CM000664.2":
+        sequence = str(chromosome.seq).lower()
+        # DO STUFF HERE
+        count = 0
+        for i in range(len(sequence) - 15):
+            subseq = sequence[i : i + 15]
+            count_inseq = subseq.count("n") 
+            if count_inseq <= 2:
+                count += 1
+        print(count)
+ ```
+ ```
+ >>> 240548031
+ ```
+## Using 100 hash functions from the family below and a single pass through the sequences, estimate the number of distinct 15-mers in the reference genome's chromosome 2 using the big data method for estimating distinct counts discussed in class. (5 points) 
+## How does your estimate change for different-sized subsets of these hash functions, e.g. the one with a=1 only, or a=1, 2, .., 10, or a=1, 2, ...100, etc? (5 points) 
+## Explain your tests and why they convinced you that your code works
+
+I generated a fake data consisting of 1000000 strs and 10 of those are distinct to test my algorithm. And the result shows the estimate is quite near to the true value.
+```python
+import random
+import numpy as np
+
+def str_generator(n):
+    s = []
+    for i in range(n):
+        s.append(''.join(random.sample(['z','y','x','w','v','u','t','s','r','q','p','o','n','m','l','k','j','i','h','g','f','e','d','c','b','a'], 20)).encode('utf8'))
+    return s
+my_mers_list = str_generator(10)*100000
+print("Number of total mers :", len(my_mers_list))
+print("Number of unique mers :", len(set(my_mers_list)))
+
+my_min_hashes = []
+for k in range(100):
+    my_hash_func = hash_funcs[k]
+    my_min_hash = float('inf')
+    for subseq in my_mers_list:
+        temp = my_hash_func(subseq)
+        my_min_hash = min(my_min_hash, temp)
+    my_min_hashes.append(my_min_hash)
+num = scale/np.median(my_min_hashes) - 1
+print("Number of estimated unique mers :", num) 
+```
+```
+>>> Number of total mers : 1000000
+>>> Number of unique mers : 10
+>>> Number of estimated unique mers : 11.798358161891802
+```
+
 # EX3
 
 ## Explain what went wrong (6 points). 
