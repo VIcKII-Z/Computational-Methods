@@ -370,5 +370,5 @@ id	breath_id	R	C	time_step	u_in	u_out	pressure
 ```
 
 ## Describe the terms of use and identify any key restrictions (e.g. do you have to officially apply to get access to the data? Are there certain types of analyses you can't do?) (5 points)
-Below is the rules of data access and use clarified by the host.
+Below is the rules of data access and use clarified by the host. The data is open source and could be used for academic research and so on, but only for non-conmercial purposes.
 >Data Access and Use. You may access and use the Competition Data for non-commercial purposes only, including for participating in the Competition and on Kaggle.com forums, and for academic research and education. The Competition Sponsor reserves the right to disqualify any participant who uses the Competition Data other than as permitted by the Competition Website and these Rules.
