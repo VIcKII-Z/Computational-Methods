@@ -68,9 +68,9 @@ Plot the distribution of genders:
 ![](https://github.com/VIcKII-Z/BIS634/blob/main/Assignment%202/Ex%201/figure%202.png)  
 
 
-This provider encode gender as female, male and unkown.
+This provider encode gender as female, male and unknown.
 
-## Sort the patients by age and store the result in a list (use the "sorted" function with the appropriate key, or implement sort yourself by modifying one of the algorithms from the slides or in some other way). (2 points) Who is the oldest patient? (2 points).S
+## Sort the patients by age and store the result in a list (use the "sorted" function with the appropriate key, or implement sort yourself by modifying one of the algorithms from the slides or in some other way). (2 points) Who is the oldest patient? (2 points).
 Sort the age and store it in a list.
 ```python
 sorted_age = patient_tb.sort_values(by = 'age', ascending=False)
