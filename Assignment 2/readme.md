@@ -288,8 +288,29 @@ Still, the result shows the function works well.
 All code blocks and presented results can be tested and viewed in [```HW2-Ex2.ipynb```](https://github.com/VIcKII-Z/BIS634/blob/main/Assignment%202/Ex%201/HW2_EX1.ipynb)
 
 # EX3
-All code blocks and presented results can be tested and viewed in [```HW2-Ex1.ipynb```](https://github.com/VIcKII-Z/BIS634/blob/main/Assignment%202/Ex%201/HW2_EX1.ipynb)
 
+## Explain what went wrong (6 points). 
+There may be several reasons causing the problem:  
+Fisrt, he may use a 32-bit python instead of a 64-bit one. The 32-bit operating system can address the memory range of 2^32, and the 64 bit operating system can address memory range of 2^64. In other words, a 32-bit operating system can only use about 4GB of memory in theory. If a program wants to use more than 4GB of memory, it must choose a 64 bit operating system.  
+Second, even if he uses a 64-bit system, this problem may also occur. This is because some overhead or background activity on his computer maybe taking up RAM  
+Third,on some operating systems, there are limits to how much RAM a single CPU can handle. So even if there is enough RAM free, a single thread cannot take more.  
+Last but not least, the algorithm he picks. In some cases like this, he does not need a list to store all of the data, but a generator func or iterator is enough.
+
+
+
+## Suggest a way of storing all the data in memory that would work (7 points)
+For large datasets, instead of loading the entire dataset into memory, he could keep the data in the hard drive and access it in batches. For example, divide the file into pieces and load/deal with the data seperately. Or use some libraries to get trunks of the data and deal with it by trunks, like pd.get_trunk(). 
+## suggest a strategy for calculating the average that would not require storing all the data in memory (7 points).
+Use two variables to record the number and sum could give the average instead of calculating after storing all data. The code is as follows.
+```python
+with open('weights.txt') as f:
+    s = 0
+    count = 0
+    for line in f:
+        s += float(line)
+        count += 1
+print("average =", s / count)
+```
 
 
 # EX4 
