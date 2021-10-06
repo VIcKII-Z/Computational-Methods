@@ -285,7 +285,7 @@ print('1000 tests success')
 Still, the result shows the function works well. 
 
 # EX2 
-All code blocks and presented results can be tested and viewed in [```HW2-Ex2.ipynb```](https://github.com/VIcKII-Z/BIS634/blob/main/Assignment%202/Ex%201/HW2_EX2.ipynb)
+All code blocks and presented results can be tested and viewed in [```HW2-Ex2.ipynb```](https://github.com/VIcKII-Z/BIS634/blob/main/Assignment%202/Ex%202/HW2_EX2.ipynb)
 
 ## Write code to loop through all 15-mers, subsequences of 15 bases within chromosome 2 (CM000664.2)
 ```python
@@ -342,7 +342,7 @@ print(f'Number of estimated distinct mers is {num}')
 ```
 The esimated distinct mers number is 201523391.
 ## How does your estimate change for different-sized subsets of these hash functions, e.g. the one with a=1 only, or a=1, 2, .., 10, or a=1, 2, ...100, etc? (5 points) 
-Using the min_hashes list generated above, the reason I can do this is that when a(hash function) and the data are fixed, then the min value of hashes is fixed. When a = 1, estimated number of distinctive 15-mers is 66076418. When a = 1, 2, ..., 10, estimated number of distinctive 15-mers is 138827224. 
+Using the min_hashes list generated above, the reason I can do this is that when a(hash function) and the data are fixed, then the min value of hashes is fixed. When a = 1, estimated number of distinctive 15-mers is 66076418. When a = 1, 2, ..., 10, estimated number of distinctive 15-mers is 138827224. And when a = 1,..100 as calculated above, is 201523391. As the number of hash functions grows, the error caused by hash collision reduces, so the number of distinctive rises.
 ```python
 res1 = int(scale / min_hashes[0] - 1)
 res10 = int(scale / np.median(min.hashes[:10]) - 1)
