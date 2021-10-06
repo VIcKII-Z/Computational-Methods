@@ -353,7 +353,7 @@ print(res10)
 >>> 66076418
 >>> 138827224
 ```
-```
+
 ## Explain your tests and why they convinced you that your code works
 
 I generated a fake data consisting of 1000000 strs and 10 of those are distinct to test my algorithm. And the result shows the estimate is quite near to the true value.
