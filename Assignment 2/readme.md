@@ -285,7 +285,7 @@ print('1000 tests success')
 Still, the result shows the function works well. 
 
 # EX2 
-All code blocks and presented results can be tested and viewed in [```HW2-Ex2.ipynb```](https://github.com/VIcKII-Z/BIS634/blob/main/Assignment%202/Ex%201/HW2_EX1.ipynb)
+All code blocks and presented results can be tested and viewed in [```HW2-Ex2.ipynb```](https://github.com/VIcKII-Z/BIS634/blob/main/Assignment%202/Ex%201/HW2_EX2.ipynb)
 
 ## Write code to loop through all 15-mers, subsequences of 15 bases within chromosome 2 (CM000664.2)
 ```python
@@ -314,7 +314,46 @@ for chromosome in human_genome:
  >>> 240548031
  ```
 ## Using 100 hash functions from the family below and a single pass through the sequences, estimate the number of distinct 15-mers in the reference genome's chromosome 2 using the big data method for estimating distinct counts discussed in class. (5 points) 
+
+To save the memmory and upgrade the speed, I did the calculation within the data stream  with O(1) extra space. And the total time is limited to 8h.
+```python
+min_hashes = [scale]*100
+for chromosome in human_genome:
+    if chromosome.name == "CM000664.2":
+        sequence = str(chromosome.seq).lower().encode('utf8')
+        for i in range(len(sequence) - 15):
+            mers_15 = sequence[i : i + 15]            
+            if mers_15.count('n'.encode('utf8')) < 3:
+                for j in range(100):
+                    f = hash_funcs[j]
+                    tmp = f(mers_15)
+                    min_hashes[j] = min(min_hashes[j], tmp)
+	    # Progress monitor
+            if i%1000000 == 0:
+                print(f'---{i+1}th  ---'+time.asctime()+':',min_hashes)
+                
+        break     
+num = int(scale/np.median(min_hashes) -1)
+print(f'Number of estimated distinct mers is {num}')
+                
+```
+```
+>>> Number of estimated distinct mers is 201523391.
+```
+The esimated distinct mers number is 201523391.
 ## How does your estimate change for different-sized subsets of these hash functions, e.g. the one with a=1 only, or a=1, 2, .., 10, or a=1, 2, ...100, etc? (5 points) 
+Using the min_hashes list generated above, the reason I can do this is that when a(hash function) and the data are fixed, then the min value of hashes is fixed. When a = 1, estimated number of distinctive 15-mers is 66076418. When a = 1, 2, ..., 10, estimated number of distinctive 15-mers is 138827224. 
+```python
+res1 = int(scale / min_hashes[0] - 1)
+res10 = int(scale / np.median(min.hashes[:10]) - 1)
+print(res1)
+print(res10)
+```
+```
+>>> 66076418
+>>> 138827224
+```
+```
 ## Explain your tests and why they convinced you that your code works
 
 I generated a fake data consisting of 1000000 strs and 10 of those are distinct to test my algorithm. And the result shows the estimate is quite near to the true value.
