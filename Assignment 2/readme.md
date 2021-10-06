@@ -285,7 +285,7 @@ print('1000 tests success')
 Still, the result shows the function works well. 
 
 # EX2 
-All code blocks and presented results can be tested and viewed in [```HW2-Ex2.ipynb```](https://github.com/VIcKII-Z/BIS634/blob/main/Assignment%202/Ex%202/HW2_EX2.ipynb)
+All code blocks and presented results can be tested and viewed in [```HW2-Ex2.ipynb```](https://github.com/VIcKII-Z/BIS634/blob/main/Assignment%202/Ex%202/HW2_EX2_.ipynb)
 
 ## Write code to loop through all 15-mers, subsequences of 15 bases within chromosome 2 (CM000664.2)
 ```python
