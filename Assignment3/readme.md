@@ -249,12 +249,12 @@ table
 ```
 >>>
 
-Alzheimer Disease	Humans	Male	Female	Aged
-Humans	581	982	398	421	358
-Female	244	421	353	435	314
-Middle Aged	110	236	202	217	191
-Male	290	398	445	353	305
-Adult	26	112	82	99	67
+  Alzheimer Disease	Humans	 Male    Female	  Aged
+Humans	     581	982	  398	    421	   358
+Female	     244	421	  353	    435	   314
+Middle Aged  110	236	  202	    217	   191
+Male	     290	398	  445	    353	   305
+Adult	      26	112	  82	     99	    67
 ```
 
 # EX 3
@@ -310,5 +310,297 @@ plt.xlabel('PC0')
 plt.ylabel('PC1')
 plt.show()
 ```
+![3](https://user-images.githubusercontent.com/62388643/139734098-ee827fd1-a77f-4535-b77a-1430284481d8.png)
+```python
+plt.scatter(embeddings_pca[(embeddings_pca['query']=='Cancer')|(embeddings_pca['query']=='Alzheimer&Cancer')]['PC0'], embeddings_pca[(embeddings_pca['query']=='Cancer')|(embeddings_pca['query']=='Alzheimer&Cancer')]['PC2'], c='orange', alpha=.3, s=2.5, label = 'Cancer')
+plt.scatter(embeddings_pca[(embeddings_pca['query']=='Alzheimer')|(embeddings_pca['query']=='Alzheimer&Cancer')]['PC0'], embeddings_pca[(embeddings_pca['query']=='Alzheimer')|(embeddings_pca['query']=='Alzheimer&Cancer')]['PC2'],c='navy', alpha=.3, s=2.5, label= 'Alzheimer')
+plt.legend()
+plt.title('PC0&PC2 by PCA')
+plt.xlabel('PC0')
+plt.ylabel('PC2')
+plt.show()
+```
+![4](https://user-images.githubusercontent.com/62388643/139734100-b7e48eaf-cd0f-478d-8c61-ea68f23b8c92.png)
+```python
+plt.scatter(embeddings_pca[(embeddings_pca['query']=='Cancer')|(embeddings_pca['query']=='Alzheimer&Cancer')]['PC1'], embeddings_pca[(embeddings_pca['query']=='Cancer')|(embeddings_pca['query']=='Alzheimer&Cancer')]['PC2'], c='orange', alpha=.3, s=2.5, label = 'Cancer')
+plt.scatter(embeddings_pca[(embeddings_pca['query']=='Alzheimer')|(embeddings_pca['query']=='Alzheimer&Cancer')]['PC1'], embeddings_pca[(embeddings_pca['query']=='Alzheimer')|(embeddings_pca['query']=='Alzheimer&Cancer')]['PC2'],c='navy', alpha=.3, s=2.5, label= 'Alzheimer')
+plt.legend()
+plt.title('PC1&PC2 by PCA')
+plt.xlabel('PC1')
+plt.ylabel('PC2')
+plt.show()
+```
+![5](https://user-images.githubusercontent.com/62388643/139734101-2c7fc021-e358-43b4-ace0-f78d44f0b871.png)
+## Now look at the distribution with the LDA projection. Note that if you have n categories (presumably 2 or maybe 3 for you), LDA will give at most n-1 reduced dimensions... so graphically show the LDA projection results in the way that you feel best captures the distribution. Comment on your choice, things you didn't chose and why, and any other differences about what you saw with PCA vs LDA.
+I have 3 classes ['Cancer', 'Alzheimer', 'Alzheimer&Cancer'], so there are at most 2 dims. I ploted both the distribution of 1d and 2d projections, and find that the 2d plot is more obvious to distinguish the 3 classes for a much more clean border.  
+PCA selects the projection direction that accounts for the largest variance, and LDA selects the direction that maximizes the difference between groups and minimizes the variance within the group, which is supervised learning. So we can see the boarder between classes in LDA is much clearer than that of PCA. 
+```pythhon
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
+categories = [paper["query"] for paper in papers.values()]
+lda = LinearDiscriminantAnalysis(n_components=1)
+embeddings_lda_1 = pd.DataFrame(
+  lda.fit_transform(embeddings_, categories), columns=["lda0"]
+)
+lda = LinearDiscriminantAnalysis(n_components=2)
+embeddings_lda_2 = pd.DataFrame(
+  lda.fit_transform(embeddings_, categories), columns=["lda0","lda1"]
+)
+embeddings_lda_1["query"] = categories
+embeddings_lda_2["query"] = categories
+```
+```python
+plt.scatter([0]*len(embeddings_lda_1[embeddings_lda_1['query']=='Cancer']['lda0']),embeddings_lda_1[embeddings_lda_1['query']=='Cancer']['lda0'], c = 'orange',label='Cancer')
+plt.scatter([0]*len(embeddings_lda_1[embeddings_lda_1['query']=='Alzheimer']['lda0']),embeddings_lda_1[embeddings_lda_1['query']=='Alzheimer']['lda0'], c = 'navy',label='Alzheimer')
+plt.scatter([0]*len(embeddings_lda_1[embeddings_lda_1['query']=='Alzheimer&Cancer']['lda0']),embeddings_lda_1[embeddings_lda_1['query']=='Alzheimer&Cancer']['lda0'], c = 'red',label='Alzheimer&Cancer')
+plt.title('1d projection by lda')
+plt.legend()
+plt.xticks([0], [''])
+plt.ylabel('lda0')
+plt.show()
+
+```
+![6](https://user-images.githubusercontent.com/62388643/139738769-a0a61ced-9628-4f0d-83f0-7c2eaf8c0339.png)
+
+```python
+plt.scatter(embeddings_lda_2[embeddings_lda_2['query']=='Cancer']['lda0'], embeddings_lda_2[embeddings_lda_2['query']=='Cancer']['lda1'], c='orange', alpha=.3, s=2.5, label = 'Cancer')
+plt.scatter(embeddings_lda_2[embeddings_lda_2['query']=='Alzheimer']['lda0'], embeddings_lda_2[embeddings_lda_2['query']=='Alzheimer']['lda1'],c='navy', alpha=.3, s=2.5, label= 'Alzheimer')
+plt.scatter(embeddings_lda_2[embeddings_pca['query']=='Alzheimer&Cancer']['lda0'], embeddings_lda_2[embeddings_pca['query']=='Alzheimer&Cancer']['lda1'],c='red', alpha=.3, s=2.5, label= 'Alzheimer&Cancer')
+plt.legend()
+plt.title('2d projection by lda')
+plt.xlabel('lda0')
+plt.ylabel('lda1')
+plt.show()
+```
+![7](https://user-images.githubusercontent.com/62388643/139738771-8eb47347-e46f-40aa-b9d9-b6b82f647f0a.png)
+
+
+# EX4
+## Describe in words how you would parallelize this algorithm to work with two processes (5 points) and how you would validate the results and the speedup (5 points).
+I would paritition the array into 2 equal parts, each thread processes 1 part due to the intrinsic partition recursion in the algorithm, and then merge the 2 ordered arrays. I would randomly generate arrays of different size(relatively large size to avoid the roundoff error), and go through some trials for each size(to balance randomness), to test the merge sort, paralleled merge sort and the broadly used  ```sorted(arr)``` method, whose underlying algorithm is a mix of quick sort and others, on their correctness and speed. 
+
+## Use the multiprocessing module to implement a 2 process parallel version of the merge sort from slides3. Demonstrate that your solution can achieve at least a speedup of 1.5x. (5 points)
+```python
+import math
+import multiprocessing
+import random
+import time
+import numpy as np
+
+def merge_sort(data):
+    if len(data) <= 1:
+        return data
+    else:
+        split = len(data) // 2
+        left = iter(merge_sort(data[:split]))
+        right = iter(merge_sort(data[split:]))
+        result = []
+        # note: this takes the top items off the left and right piles 
+        left_top = next(left)
+        right_top = next(right)
+        while True:
+            if left_top < right_top: 
+                result.append(left_top) 
+                try:
+                    left_top = next(left)
+                except StopIteration:
+                    # nothing remains on the left; add the right + return
+                    return result + [right_top] + list(right) 
+            else:
+                result.append(right_top) 
+                try:
+                    right_top = next(right)
+                except StopIteration:
+                    # nothing remains on the right; add the left + return
+                    return result + [left_top] + list(left)
+                    
+                    
+def merge(*args):
+    left, right = args[0] if len(args) == 1 else args
+    left_length, right_length = len(left), len(right)
+    left_index, right_index = 0, 0
+    merged = []
+    while left_index < left_length and right_index < right_length:
+        if left[left_index] <= right[right_index]:
+            merged.append(left[left_index])
+            left_index += 1
+        else:
+            merged.append(right[right_index])
+            right_index += 1
+    if left_index == left_length:
+        merged.extend(right[right_index:])
+    else:
+        merged.extend(left[left_index:])
+    return merged
+
+def merge_sort_parallel(data):
+
+    processes = multiprocessing.cpu_count()
+    pool = multiprocessing.Pool(processes=processes)#4
+    mid = len(data) // 2
+    data = [data[:mid], data[mid:]]
+    data = pool.map(merge_sort, data)
+  
+    data = merge(data[0], data[1])
+    return data
+
+
+if __name__ == "__main__":
+
+    res = {'merge_sort': [], 'merge_sort_parallel': []}    
+    for size in range(100000,1100000,100000):
+        res['merge_sort'].append(0)
+        res['merge_sort_parallel'].append(0)
+        for trail in range(10):
+            data_unsorted = [random.randint(0, size) for _ in range(size)]  
+            
+            for sort in merge_sort, merge_sort_parallel:
+                
+                start = time.time()
+                data_sorted = sort(data_unsorted)
+                end = time.time() - start
+                res[sort.__name__][-1] += end
+               
+                assert sorted(data_unsorted) == data_sorted, 'merge sort not validated'
+        
+            res['merge_sort'][-1] /= 20
+            res['merge_sort_parallel'][-1] /= 20
+
+
+    print(res)
+ ```
+# EX5
+
+
+## Do data exploration on the dataset you identified in exercise 4 in the last homework, and present a representative set of figures that gives insight into the data. Comment on the insights gained. (5 points)
+There are 5 predictors and 1 target pressure. 
+
+R - lung attribute indicating how restricted the airway is (in cmH2O/L/S). Physically, this is the change in pressure per change in flow (air volume per time). Intuitively, one can imagine blowing up a balloon through a straw. We can change R by changing the diameter of the straw, with higher R being harder to blow.
+C - lung attribute indicating how compliant the lung is (in mL/cmH2O). Physically, this is the change in volume per change in pressure. Intuitively, one can imagine the same balloon example. We can change C by changing the thickness of the balloon’s latex, with higher C having thinner latex and easier to blow.
+time_step - the actual time stamp.
+u_in - the control input for the inspiratory solenoid valve. Ranges from 0 to 100.
+u_out - the control input for the exploratory solenoid valve. Either 0 or 1.
+pressure - the airway pressure measured in the respiratory circuit, measured in cmH2O.
+Breath_id is globally-unique time step for breaths. And each step has 80 samples.
+```python
+train.groupby('breath_id')['id'].count()
+```
+```
+breath_id
+1         80
+2         80
+3         80
+4         80
+5         80
+          ..
+125740    80
+125742    80
+125743    80
+125745    80
+125749    80
+Name: id, Length: 75450, dtype: int64
+```
+U_out is the control input for the exploratory solenoid valve. It is either 0 or 1.
+```python
+train['u_out'].value_counts()
+```
+```
+1    3745032
+0    2290968
+Name: u_out, dtype: int64
+```
+The remains statistical summary is as follows.
+```
+train[['R','C','u_in','pressure']].describe()
+```
+```
+
+             R	           C	           u_in	         pressure
+count	6.036000e+06	6.036000e+06	6.036000e+06	6.036000e+06
+mean	2.703618e+01	2.608072e+01	7.321615e+00	1.122041e+01
+std	1.959549e+01	1.715231e+01	1.343470e+01	8.109703e+00
+min	5.000000e+00	1.000000e+01	0.000000e+00	-1.895744e+00
+25%	5.000000e+00	1.000000e+01	3.936623e-01	6.329607e+00
+50%	2.000000e+01	2.000000e+01	4.386146e+00	7.032628e+00
+75%	5.000000e+01	5.000000e+01	4.983895e+00	1.364103e+01
+max	5.000000e+01	5.000000e+01	1.000000e+02	6.482099e+01
+```
+Distribution of pressure.
+```python
+plt.violinplot(train['pressure'])
+plt.ylabel('pressure')
+plt.title('Distribution of pressure')
+plt.show()
+```
+![8](https://user-images.githubusercontent.com/62388643/139754425-4f3cee6e-09d3-4296-9713-b98895f0f2da.png)
+
+Distribution of u_in.
+```python
+plt.hist(train['u_in'],bins=20)
+plt.title('Distribution of u_in')
+plt.xlabel('u_in')
+plt.show()
+```
+![99](https://user-images.githubusercontent.com/62388643/139754427-32d8ce62-f7db-41f1-99b4-9eb7e8c49ce7.png)
+
+Pivot table with each breath id and its samples. R*\C is constant.
+```python
+pt = pd.pivot_table(train, index=['breath_id','RC','u_in','u_out'], values=['pressure'])
+```
+```
+
+                            pressure
+breath_id	RC	u_in	u_out	
+1	  1000	0.000000	1	9.240116
+            0.083334	0	5.837492
+            0.779225	1	7.524743
+            1.439041	1	6.962326
+            1.994220	1	7.454441
+...	...	...	...	...
+125749	500	14.700098	0	17.015533
+            16.101221	0	15.468886
+            16.266744	0	15.117375
+            21.614707	0	9.563505
+            25.504196	0	5.345377
+```
+Correlation map of those varibles for each step.
+```python
+import seaborn as sns
+sns.heatmap(train[train['breath_id']==1][['u_in','u_out','pressure']].corr(), annot=True)
+plt.title('Correlation map')
+plt.show()
+```
+![10](https://user-images.githubusercontent.com/62388643/139754426-b1ed80c1-1403-49a7-b8be-5038d3e68537.png)
+
+
+
+
+## Are there any missing values in your data? (Whether the answer is yes or no, include in your answer the code you used to come to this conclusion.) If so, quantify. Do they appear to be MAR/MCAR/MNAR? Explain. (5 points) <-- This will be discussed in class on October 12.
+No. Check with df.isnull() as follows. Also, the description table and distribution plot above also show a reasonable distribution without any 0s or -1s.
+```python
+df = pd.read_csv("ventilator-pressure-prediction/train.csv", na_values = ['--', 'N/A', 'na'])
+print(df.isnull().sum())
+```
+```
+id           0
+breath_id    0
+R            0
+C            0
+time_step    0
+u_in         0
+u_out        0
+pressure     0
+dtype: int64
+```
+## Identify any data cleaning needs and write code to perform them. If the data does not need to be cleaned, explain how you reached this conclusion. (5 points)
+
+
+There is no cleaning need. According to above data desciption, all data is standardized in the uniform formatting, and is tidying data. Also, per the above analysis, there is not any missing data or duplicates.
+
+```python
+len(train['id'].unique())==len(train)
+```
+```
+>>> True
+```
 
