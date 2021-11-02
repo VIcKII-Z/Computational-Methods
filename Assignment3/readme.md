@@ -469,6 +469,30 @@ if __name__ == "__main__":
 
     print(res)
  ```
+ ```
+ >>> {'merge_sort_parallel': [0.03698297465552905, 0.06745909801219516, 0.11343476252494589, 0.21306876182170678, 0.19981711583980172, 0.2784967720520475, 0.2800033656297079, 0.29456480661852225, 0.34507608897790093, 0.4940746468024903], 'merge_sort': [0.06356818171759858, 0.11665013666115957, 0.17110447529951156, 0.26599080471600745, 0.33141187424245283, 0.46824584121189144, 0.4904059034067279, 0.5523171038771068, 0.6442017886016921, 0.7220174190322138]}
+ ```
+ 
+ Plot the time vs methods figure, which shows the time is shinked to approximately 2/3. Calcualting the mean of its fraction, we get 1.6x.
+ ```python
+import matplotlib.pyplot as plt
+plt.plot( range(10000,110000,10000), res['merge_sort_parallel'], c = 'orange')
+plt.plot( range(10000,110000,10000), res['merge_sort'], c = 'green')
+plt.xlabel('array size')
+plt.ylabel('time')
+plt.title('speed of merge sort vs paralleled merge sort')
+plt.show()
+```
+![9](https://user-images.githubusercontent.com/62388643/139760422-5b0455c1-681d-4b26-b271-74b8c846a58c.png)
+
+ 
+ ```python
+import numpy as np
+np.mean([res['merge_sort'][i]/res['merge_sort_parallel'][i] for i  in range(10)])
+```
+```
+>>> 1.649938131351138
+```
 # EX5
 
 
@@ -543,25 +567,25 @@ plt.show()
 ```
 ![99](https://user-images.githubusercontent.com/62388643/139754427-32d8ce62-f7db-41f1-99b4-9eb7e8c49ce7.png)
 
-Pivot table with each breath id and its samples. R*\C is constant.
+Pivot table with each breath id and its samples. R*/C is constant.
 ```python
 pt = pd.pivot_table(train, index=['breath_id','RC','u_in','u_out'], values=['pressure'])
 ```
 ```
 
-                            pressure
-breath_id	RC	u_in	u_out	
-1	  1000	0.000000	1	9.240116
-            0.083334	0	5.837492
-            0.779225	1	7.524743
-            1.439041	1	6.962326
-            1.994220	1	7.454441
+                                       pressure
+breath_id RC	     u_in	u_out	
+1	 1000	0.000000	 1 	9.240116
+                0.083334	0	5.837492
+                0.779225	1	7.524743
+                1.439041	1	6.962326
+                1.994220	1	7.454441
 ...	...	...	...	...
-125749	500	14.700098	0	17.015533
-            16.101221	0	15.468886
-            16.266744	0	15.117375
-            21.614707	0	9.563505
-            25.504196	0	5.345377
+125749	 500	14.700098	0	17.015533
+                16.101221	0	15.468886
+                16.266744	0	15.117375
+                21.614707	0	9.563505
+                25.504196	0	5.345377
 ```
 Correlation map of those varibles for each step.
 ```python
