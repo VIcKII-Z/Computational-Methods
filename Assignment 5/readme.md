@@ -142,9 +142,18 @@ for k in [5,7,15]:
 >>> time cost: 3.2021297613779702s
 ```
 
-![3](https://user-images.githubusercontent.com/62388643/141699119-4ed8193f-8c62-4865-88ef-8f2c793593d1.png)
-![5](https://user-images.githubusercontent.com/62388643/141699120-84305131-a2ba-4efc-8154-9dc16a614f6a.png)
-![6](https://user-images.githubusercontent.com/62388643/141699121-a9ba442e-cece-49d5-8e94-4c552f284c37.png)
+![1](https://user-images.githubusercontent.com/62388643/141699709-b5532dd2-2213-4e57-a22b-806a8bdb9ce1.png)
+
+![2](https://user-images.githubusercontent.com/62388643/141699730-ac56ef78-1a01-476a-a96d-2972fafc2fd3.png)
+![3](https://user-images.githubusercontent.com/62388643/141699731-9a02f9fd-7ebe-4906-8f48-fd445d639bbe.png)
+
+![4](https://user-images.githubusercontent.com/62388643/141699656-15daabf5-df88-41e1-8bff-0056e939daee.png)
+![5](https://user-images.githubusercontent.com/62388643/141699657-082ed6d0-4c05-43c5-8af1-c592697a55d8.png)
+![6](https://user-images.githubusercontent.com/62388643/141699658-5b7fc1f5-6452-4389-84d7-d026d4c90c36.png)
+![7](https://user-images.githubusercontent.com/62388643/141699659-6e192338-15aa-49a9-a8bf-0eba2b68f1de.png)
+![8](https://user-images.githubusercontent.com/62388643/141699660-782d5fee-9619-4999-b485-64f4afac4546.png)
+![9](https://user-images.githubusercontent.com/62388643/141699661-172554e7-9e6e-45bd-93fa-5ad99634215a.png)
+
 
 ## EX3
 ## Implement both (yes, I know, I gave you implementations on the slides, but try to do this exercise from scratch as much as possible) (5 points), time them as functions of n (5 points), and display this in the way you think is best (5 points). Discuss your choices (e.g. why those n and why you're displaying it that way; 5 points) and your results (5 points).
@@ -209,3 +218,116 @@ import pandas as pd
 # EX4
 Implement a function that takes two strings and returns an optimal local alignment (6 points) and score (6 points) using the Smith-Waterman algorithm; insert "-" as needed to indicate a gap (this is part of the alignment points). Your function should also take and correctly use three keyword arguments with defaults as follows: match=1, gap_penalty=1, mismatch_penalty=1 (6 points). Here, that is a penalty of one will be applied to match scores for each missing or changed letter.
 Test it, and explain how your tests show that your function works. Be sure to test other values of match, gap_penalty, and mismatch_penalty (7 points).
+
+I test the below function with the given samples, and both works well. Then I modified the params to see what happens, and the results are also reasonable by manul check.
+```python
+import numpy as np
+
+def align(seq1, seq2, match=1, gap_penalty=1, mismatch_penalty=1):
+    path = {}
+    
+    S = np.zeros((len(seq1) + 1, len(seq2) + 1), dtype = 'int')  
+
+    for i in range(0, len(seq1) + 1):
+        path['[' + str(i) + ', 0]'] = []
+    for i in range(0, len(seq2) + 1):
+        path['[0, ' + str(i) + ']'] = []
+
+    for i in range(1, len(seq1) + 1):
+        for j in range(1, len(seq2) + 1):
+            if seq1[i - 1] == seq2[j - 1]:
+                L = S[i - 1, j - 1] + match #match
+            else:
+                L = S[i - 1, j - 1] - mismatch_penalty #substitute
+            
+            P = S[i - 1, j] - gap_penalty #gap in seq2
+            Q = S[i, j - 1] - gap_penalty #gap in seq1
+            S[i, j] = max(L, P, Q, 0)
+            path_key = '[' + str(i) + ', ' + str(j) + ']'
+            path[path_key] = []
+            if L == S[i, j]:
+                path[path_key].append('[' + str(i - 1) + ', ' + str(j - 1) + ']')
+            if P == S[i, j]:
+                path[path_key].append('[' + str(i - 1) + ', ' + str(j) + ']')
+            if Q == S[i, j]:
+                path[path_key].append('[' + str(i) + ', ' + str(j - 1) + ']')
+    end = np.argwhere(S == S.max()) #find the max score
+
+    for i in end: #traceback to find the route
+        key = str(list(i))
+        value = path[key]
+        result = [key]
+        traceback(path, S, value, result, seq1, seq2)
+    print("score = " + str(S.max()))
+
+def traceback(path, S, value, result, seq1, seq2):
+    if value != []:
+        i = int((value[0].split(',')[0]).strip('['))
+        j = int((value[0].split(',')[1]).strip(']'))        
+        key = value[0]
+        result.append(key)
+        value = path[key]
+    if S[i, j] != 0:
+        traceback(path, S, value, result, seq1, seq2)
+    else:
+        x = 0
+        y = 0
+        s1 = ''
+        s2 = ''
+        for n in range(len(result)-2, -1, -1):
+            point = result[n]
+            i = int((point.split(',')[0]).strip('['))
+            j = int((point.split(',')[1]).strip(']'))
+            if i == x:
+                s1 += '-'
+                s2 += seq2[j-1]
+            elif j == y:
+                s1 += seq1[i-1]
+                s2 += '-'
+            else:
+                s1 += seq1[i-1]
+                s2 += seq2[j-1]
+            x = i
+            y = j     
+        print("seq1 = {}".format(s1))
+        print("seq2 = {}".format(s2))
+
+
+align('tgcatcgagaccctacgtgac', 'actagacctagcatcgac')
+```
+```
+>>>
+seq1 = agacccta-cgt-gac
+seq2 = aga-cctagcatcgac
+score = 8
+```
+```python
+align('tgcatcgagaccctacgtgac', 'actagacctagcatcgac', gap_penalty=2)
+
+```
+```
+>>>
+seq1 = gcatcga
+seq2 = gcatcga
+score = 7
+```
+```python
+align('tgcatcgagaccctacgtgac', 'actagacctagcatcgac', gap_penalty=2,mismatch_penalty=3)
+```
+
+```
+>>>
+seq1 = gcatcga
+seq2 = gcatcga
+score = 7
+```
+```python
+align('tgcatcgagaccctacgtgac', 'actagacctagcatcgac', match=2, gap_penalty=2,mismatch_penalty=3)
+```
+```
+>>>
+seq1 = agacccta-cgt-gac
+seq2 = aga-cctagcatcgac
+score = 15
+```
+
