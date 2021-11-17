@@ -177,9 +177,8 @@ def multi(k, j):
 
     df['cluster'] = cluster_ids
 
-    t.append(time.time() - t)
+    print(time.time() - t)
 
-    plot(k, j)
 ```
 
 ## EX3
