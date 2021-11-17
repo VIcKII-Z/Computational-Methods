@@ -1,6 +1,5 @@
 # EX1
-## implement a two-dimensional version of the gradient descent algorithm to find optimal choices of a and b. (7 points) 
-## Explain how you estimate the gradient given that you cannot directly compute the derivative (3 points), identify any numerical choices -- including but not limited to stopping criteria -- you made (3 points), and justify why you think they were reasonable choices (3 points).
+## implement a two-dimensional version of the gradient descent algorithm to find optimal choices of a and b. (7 points)Explain how you estimate the gradient given that you cannot directly compute the derivative (3 points), identify any numerical choices -- including but not limited to stopping criteria -- you made (3 points), and justify why you think they were reasonable choices (3 points).
 I estimated the partial gradients using (f(a + h, b) - f(a, b))/h and (f(a, b + h) - f(a, b))/h, here h is really small.
 I set the learning rate gamma as .1, the h is 1e-4 and the initial a,b as 0.4, 0.2. 
 And my stopping criteria is that once the loss does not decrease for a continuous 10 epochs, the gradient descent process stops. The reason I do this is that when the loss does not decrease for a period of time, it indicates that the loss is trapped in a minimum, whether global or local. The resualt shows that the minimum is about 1.000000015 as a,b is  0.7119500000003939, 0.16894999999974553 respectively.
