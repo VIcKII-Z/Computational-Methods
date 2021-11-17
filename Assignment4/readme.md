@@ -56,7 +56,7 @@ minums
 ## Modify the k-means code (or write your own) from slides13 to use the Haversine metric and work with our dataset (5 points). Visualize your results with a color-coded scatter plot (5 points); be sure to use an appropriate map projection (i.e. do not simply make x=longitude and y=latitude; 5 points). Use this algorithm to cluster the cities data for k=5, 7, and 15. Run it several times to get a sense of the variation of clusters for each k (share your plots) (5 points); comment briefly on the diversity of results for each k. (5 points)
 
 I run 3 times on each K, and the average of the runtimes are as below result shows. 
-Also, I present the figures after clustering by appropriate map projection, which shows that when K get larger, the varience within each cluster gets smaller, and the result becomes more stable. When K is small, the result relys much on the initial centers chosed. However, we could see when K=15, the map gets complicated and hard to interpret. So may a medium choice like 7 is better.
+Also, I present the figures after clustering by appropriate map projection, which shows that when K get larger, the varience within each cluster gets smaller, and the result becomes more stable. When K is small, the result relys much on the initial centers chosed. However, we could see when K=15, the map gets complicated and hard to interpret. 
 
 
 ```python
