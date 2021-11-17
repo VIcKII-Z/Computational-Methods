@@ -214,6 +214,34 @@ import pandas as pd
 ![1](https://user-images.githubusercontent.com/62388643/141699075-bfa0665a-20d8-46fa-b121-4a7af9c9f030.png)
 ![2](https://user-images.githubusercontent.com/62388643/141699076-5c39fa7e-b457-498e-acdc-00ffd658dcea.png)
 
+## speedup your code using the multiprocessing module and demonstrate the speedup and discuss how it scales.
+I use parallelism when calculating the distance from each point to the center point.
+```python
+def dis(pt, centers):
+    dist = haversine(pt[1], pt[0], centers[1], centers[0])
+
+def multi(k, j):
+    #processes = multiprocessing.cpu_count()
+    t = time.time()
+    centers = random.sample(pts, k)
+    old_cluster_ids, cluster_ids = None, []  # arbitrary but different
+    while cluster_ids != old_cluster_ids:
+        old_cluster_ids = list(cluster_ids)
+        cluster_ids = []
+        for pt in pts:
+            min_cluster = -1
+            min_dist = float('inf')
+            pool = multiprocessing.Pool(k)
+
+            d = pool.map(partial(dis, pt), centers)
+            cluster_ids.append(d.index(min(d)))
+
+    df['cluster'] = cluster_ids
+
+    t.append(time.time() - t)
+
+    plot(k, j)
+    ```
 
 # EX4
 Implement a function that takes two strings and returns an optimal local alignment (6 points) and score (6 points) using the Smith-Waterman algorithm; insert "-" as needed to indicate a gap (this is part of the alignment points). Your function should also take and correctly use three keyword arguments with defaults as follows: match=1, gap_penalty=1, mismatch_penalty=1 (6 points). Here, that is a penalty of one will be applied to match scores for each missing or changed letter.
