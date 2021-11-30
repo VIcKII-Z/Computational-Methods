@@ -8,6 +8,13 @@
 ## Using Flask, implement a server that provides three routes
 ![image](https://user-images.githubusercontent.com/62388643/143957252-0f5fdcc8-f16d-46b6-a555-d42419ef3020.png)
 
+## Take this exercise one step beyond that which is described above in a way that you think is appropriate, and discuss your extension in your readme.
+I use js and css to add a pop-up alert to address the use of this data.
+
+![image](https://user-images.githubusercontent.com/62388643/143960699-243550bf-3302-4233-b9ce-ca403e98a6e2.png)
+
+
+# EX2
 
 
 
