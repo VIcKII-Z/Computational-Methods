@@ -185,42 +185,97 @@ my_tree.printTree()
 >>> True
 ```
 ## Using various sizes n of trees (populated with random data) and sufficiently many calls to in (each individual call should be very fast, so you may have to run many repeated tests), demonstrate that in is executing in O(log n) times; on a log-log plot, for sufficiently large n, the graph of time required for checking if a number is in the tree as a function of n should be almost horizontal. (5 points).
+```python
+from tqdm import tqdm
+import numpy as np
+import time
+ns = [10,100,1000,10000,100000]
+ts = []
+for n in ns:
+    nodes = np.random.random_integers(0,1000, n)
+    st_t = time.time()    
+    for _ in tqdm(range(100)):
+        for node in nodes:
+             node in my_tree
+    ts.append(time.time()-st_t)
+    
+    
+import plotnine as p9
+import pandas as pd
+
+(p9.ggplot(pd.DataFrame({'n': ns, 'time (s)': ts}), p9.aes(x='n', y='time (s)'))
++ p9.geom_point()
+ + p9.scale_y_continuous(trans='log10')
++ p9.scale_x_continuous(trans='log10')
+)
+```
+![image](https://user-images.githubusercontent.com/62388643/144682345-71dcd43e-e5df-4044-beb5-247427d64254.png)
+
+
+
 
 
 ## This speed is not free. Provide supporting evidence that the time to setup the tree is O(n log n) by timing it for various sized ns and showing that the runtime lies between a curve that is O(n) and one that is O(n**2).
+```python
+
+ns = range(0,400,20)
+ts1, ts2, ts3 = [], [], []
+import random
+import math
+# nlogn
+for n in tqdm(ns):
+    st_t = time.time()
 
 
->Created by statecancerprofiles.cancer.gov on 11/29/2021 3:35 pm.
-
-State Cancer Registries may provide more current or more local data.
-
-
-Trend
-   Rising when 95% confidence interval of average annual percent change is above 0.
-   Stable when 95% confidence interval of average annual percent change includes 0.
-   Falling when 95% confidence interval of average annual percent change is below 0.
-
-"[rate note] Incidence rates (cases per 100,000 population per year) are age-adjusted to the 2000 US standard population [http://www.seer.cancer.gov/stdpopulations/stdpop.19ages.html] (19 age groups: <1, 1-4, 5-9, ... , 80-84, 85+). Rates are for invasive cancer only (except for bladder cancer which is invasive and in situ) or unless otherwise specified. Rates calculated using SEER*Stat. Population counts for denominators are based on Census populations as modified [https://seer.cancer.gov/popdata/] by NCI. The 1969-2018 US Population Data File [https://seer.cancer.gov/popdata/] is used for SEER and NPCR incidence rates."
-"[trend note] Incidence data come from different sources. Due to different years of data availability, most of the trends are AAPCs based on APCs but some are APCs calculated in SEER*Stat. Please refer to the source for each area for additional information."
-
-Rates and trends are computed using different standards for malignancy. For more information see malignant.html.
-
-"^ All Stages refers to any stage in the Surveillance, Epidemiology, and End Results (SEER) summary stage [ https://seer.cancer.gov/tools/ssm/ ]."
-"[rank note]Results presented with the CI*Rank statistics help show the usefulness of ranks. For example, ranks for relatively rare diseases or less populated areas may be essentially meaningless because of their large variability, but ranks for more common diseases in densely populated regions can be very useful. More information about methodology can be found on the CI*Rank website."
-*** No Healthy People 2020 Objective for this cancer.
-Healthy People 2020 Objectives [ https://www.healthypeople.gov/ ]provided by the Centers for Disease Control and Prevention [ https://www.cdc.gov ]. 
-
-"* Data has been suppressed to ensure confidentiality and stability of rate estimates.  Counts are suppressed if fewer than 16 records were reported in a specific area-sex-race category. If an average count of 3 is shown, the total number of cases for the time period is 16 or more which exceeds suppression threshold (but is rounded to 3)."
-
-"1 Source: National Program of Cancer Registries [ https://www.cdc.gov/cancer/npcr/index.htm ] and Surveillance, Epidemiology, and End Results [ http://seer.cancer.gov ] SEER*Stat Database (2001-2018) - United States Department of Health and Human Services, Centers for Disease Control and Prevention and National Cancer Institute. Based on the 2020 submission."
-"5 Source: National Program of Cancer Registries [ https://www.cdc.gov/cancer/npcr/index.htm ] and Surveillance, Epidemiology, and End Results [ http://seer.cancer.gov ] SEER*Stat Database (2001-2018) - United States Department of Health and Human Services, Centers for Disease Control and Prevention and National Cancer Institute. Based on the 2020 submission."
-"6 Source: National Program of Cancer Registries SEER*Stat Database (2001-2018) - United States Department of Health and Human Services, Centers for Disease Control and Prevention (based on the 2020 submission).  [ https://www.cdc.gov/cancer/npcr/index.htm ]"
-7 Source: SEER November 2020 submission.
-"8 Source: Incidence data provided by the SEER Program. ( http://seer.cancer.gov ) AAPCs are calculated by the Joinpoint Regression Program ( https://surveillance.cancer.gov/joinpoint/ ) and are based on APCs. Data are age-adjusted to the 2000 US standard population ( http://www.seer.cancer.gov/stdpopulations/single_age.html ) (19 age groups: <1, 1-4, 5-9, ... , 80-84,85+). Rates are for invasive cancer only (except for bladder cancer which is invasive and in situ) or unless otherwise specified. Population counts for denominators are based on Census populations as modifed by NCI. The 1969-2018 US Population Data ( http://seer.cancer.gov/popdata/ ) File is used with SEER November 2020 data. "
+    for _ in range(1000):
+        nodes = np.random.random_integers(0, 1000, n)
+        tree = Tree()
+        for node in nodes:
+            tree.add(node)
+    ts1.append(time.time() - st_t)
+# n
+for n in tqdm(ns):
+    st_t = time.time()
 
 
-"Interpret Rankings provides insight into interpreting cancer incidence statistics.  When the population size for a denominator is small, the rates may be unstable.  A rate is unstable when a small change in the numerator (e.g., only one or two additional cases) has a dramatic effect on the calculated rate."
+    for _ in range(1000):
 
-Data for United States does not include Puerto Rico.
+
+        for i in range(n):
+            pass
+    ts2.append(time.time() - st_t)
+#n^2   
+# ns = [int((i/math.log(i))**2) for i in ns]
+
+
+for n in tqdm(ns):
+    st_t = time.time()
+    for _ in range(1000):
+
+
+        for i in range(n):
+            for j in range(n):
+                pass
+    ts3.append(time.time() - st_t)
+    
+    
+import matplotlib.pyplot as plt
+plt.plot(ns, ts1)
+plt.plot(ns, ts2)
+plt.plot(ns, ts3)
+plt.legend(['NlogN','N','N^2'])
+plt.xlabel('N')
+plt.ylabel('Time(s)')
+plt.title('Speed comparison')
+plt.show()
+```
+![image](https://user-images.githubusercontent.com/62388643/144682538-852687d2-1631-4b34-a13d-e8ea9cda618d.png)
+
+    
+        
+    
+
+
+
 
 
