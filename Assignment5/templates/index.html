@@ -1,0 +1,17 @@
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>title</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+        <script src="{{ url_for('static', filename='js/index.js')}}"></script>
+    </head>
+    <body>
+        Hello everybody. Type some text here to analyze it:<br>
+        <form action="/info" method="GET">
+            <textarea style="width:100%; height: 10em" name="usertext"></textarea>
+            <br>
+            <input type="submit" value="Analyze">
+        </form>
+    </body>
+</html>

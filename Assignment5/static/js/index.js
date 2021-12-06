@@ -1,0 +1,1 @@
+alert("Data only for personal use")
