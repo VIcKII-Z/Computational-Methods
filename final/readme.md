@@ -4,7 +4,7 @@ When a patient has problems breathing, what do doctors do? A ventilator is used 
 
 Simulators are currently trained as an ensemble, with each model simulating a single lung setting. However, because lungs and their features occupy a continuous space, a parametric technique that takes into account the variances in patient lungs must be investigated.
 ## Outline
-This roport consist of 5 parts to illustrate on the pipline of predicting the pressure out of the ventilator, which are Dataset, Preprocessing, Feature Engineering, Model Building and Result and Discussion.
+This roport consist of 5 parts to illustrate on the pipline of predicting the pressure out of the ventilator, which are Dataset, Data Analysis, Analysis API,  Feature Engineering, Model Building and Result and Discussion.
 ## Dataset
 The dataset is credit to Kaggle, which can be downloaded at https://www.kaggle.com/c/ventilator-pressure-prediction/data. It has three files, training, testing, and submission sample. The data analysis below are based on training set.
 
@@ -104,6 +104,12 @@ For each timestep, the most correlated variables are U_in(0.76) and U_out(-0.81)
   
 ![image](https://user-images.githubusercontent.com/62388643/147006103-4d945e41-3c60-4bbe-b364-21e91a483fea.png)
 
+## Analysis API
+Also, I built a interface for the users and researchers to anlyze and visualize the related data.
+The home page's look is as below. The data source could be reached by clicking the picture in the middle, and users could choose to analyze one of the variables in the dropdown.
+![image](https://user-images.githubusercontent.com/62388643/147033850-70b1fb3d-dfef-4a7d-a706-a3b86285f9a1.png)
+After choosing the varibles, the page will goes like this, showing the plot and its basic statistics. And users could return to homepage by clicking the left buttom text. Also, if other actions taken except for a valid varible input, the pages will turn to be a 404 notice page.
+![image](https://user-images.githubusercontent.com/62388643/147034223-5f58b2cd-8b2d-448d-8f8a-c887effe1843.png)
 
 
 ## Feature Engineering
@@ -206,8 +212,7 @@ for fold, (train_idx, test_idx) in enumerate(kf.split(train, targets)):
 ![image](https://user-images.githubusercontent.com/62388643/147009068-3a35ef3b-65c8-4f4e-baf6-b5842064da63.png)
 Model early Stopped at 171/300 epoch. Validation loss is .16934, Test loss is .1576, and the top 10's test loss is .102
 
-Overfitting: 
-Feature Engineering(Masknig augmentation/Shuffling augmentation)
+When reflecting on this project, I found there are some points which could be improved. For feature engineering, there are still some future work to do like data augmentation(Masknig augmentation/Shuffling augmentation), which could make the training data learns more about the real mechanism and performs better on the test data.
 
 
 
