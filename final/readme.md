@@ -4,7 +4,7 @@ When a patient has problems breathing, what do doctors do? A ventilator is used 
 
 Simulators are currently trained as an ensemble, with each model simulating a single lung setting. However, because lungs and their features occupy a continuous space, a parametric technique that takes into account the variances in patient lungs must be investigated.
 ## Outline
-This roport consist of 5 parts to illustrate on the pipline of predicting the pressure out of the ventilator, which are Dataset, Data Analysis, Analysis API,  Feature Engineering, Model Building and Result and Discussion.
+This roport consist of 5 parts to illustrate on the pipline of predicting the pressure out of the ventilator, which are Dataset, Data Analysis, Analysis API,  Feature Engineering, Model Building, Result and Discussion and User Guide.
 ## Dataset
 The dataset is credit to Kaggle, which can be downloaded at https://www.kaggle.com/c/ventilator-pressure-prediction/data. It has three files, training, testing, and submission sample. The data analysis below are based on training set.
 
@@ -213,6 +213,17 @@ for fold, (train_idx, test_idx) in enumerate(kf.split(train, targets)):
 Model early Stopped at 171/300 epoch. Validation loss is .16934, Test loss is .1576, and the top 10's test loss is .102
 
 When reflecting on this project, I found there are some points which could be improved. For feature engineering, there are still some future work to do like data augmentation(Masknig augmentation/Shuffling augmentation), which could make the training data learns more about the real mechanism and performs better on the test data.
+
+## User Guide
+### Requirement
+tensorflow == 2.4.1  
+keras == 2.4.0     
+TPU/GPU  
+### Model
+```Model.ipynb```
+### API
+```python app.py```
+
 
 
 
