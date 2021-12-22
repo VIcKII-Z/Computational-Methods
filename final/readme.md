@@ -100,7 +100,8 @@ print('Max pressure =',train_gf.pressure.max(), 'Min pressure =',train_gf.pressu
 ![image](https://user-images.githubusercontent.com/62388643/147003347-834766b5-5653-42af-ab27-0436656d088b.png)
 ### Correlation
 
-For each timestep, the most correlated variables are U_in(0.76) and U_out(-0.81).
+For each timestep, the most correlated variables are U_in(0.76) and U_out(-0.81).  
+  
 ![image](https://user-images.githubusercontent.com/62388643/147006103-4d945e41-3c60-4bbe-b364-21e91a483fea.png)
 
 
@@ -201,6 +202,14 @@ for fold, (train_idx, test_idx) in enumerate(kf.split(train, targets)):
         model.fit(X_train, y_train, validation_data=(X_valid, y_valid), epochs=EPOCH, batch_size=BATCH_SIZE, callbacks=[lr, es, sv])
         test_preds.append(model.predict(test).squeeze().reshape(-1, 1).squeeze())
 ```
+## Result and disccussion
+![image](https://user-images.githubusercontent.com/62388643/147009068-3a35ef3b-65c8-4f4e-baf6-b5842064da63.png)
+Model early Stopped at 171/300 epoch. Validation loss is .16934, Test loss is .1576, and the top 10's test loss is .102
+
+Overfitting: 
+Feature Engineering(Masknig augmentation/Shuffling augmentation)
+
+
 
 
     
