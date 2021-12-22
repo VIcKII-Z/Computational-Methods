@@ -6,7 +6,7 @@ Simulators are currently trained as an ensemble, with each model simulating a si
 ## Outline
 This roport consist of 5 parts to illustrate on the pipline of predicting the pressure out of the ventilator, which are **Dataset, Data Analysis, Analysis API,  Feature Engineering, Model Building, Result and Discussion and User Guide**.
 ## Dataset
-The dataset is credit to Kaggle, which can be downloaded at https://www.kaggle.com/c/ventilator-pressure-prediction/data. It has three files, training, testing, and submission sample. The data analysis below are based on training set.
+The dataset is credit to Kaggle, which can be downloaded at https://www.kaggle.com/c/ventilator-pressure-prediction/data. Regarding the data access and use, peole may access and use the Competition Data for non-commercial purposes only, including for participating in the Competition and on Kaggle.com forums, and for academic research and education. The Competition Sponsor reserves the right to disqualify any participant who uses the Competition Data other than as permitted by the Competition Website and these Rules. It has three files, training, testing, and submission sample. The data analysis below are based on training set.
 
 The training set has 6 variables, 5 of which are predictors and 1 is the target. The details are as belows.  
 ```R``` - lung attribute indicating how restricted the airway is (in cmH2O/L/S). Physically, this is the change in pressure per change in flow (air volume per time). Intuitively, one can imagine blowing up a balloon through a straw. We can change R by changing the diameter of the straw, with higher R being harder to blow.   
