@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      h2{
+        background-color: bisque;
+      }
+    </style>
+    <meta charset="UTF-8" name="viewport" content="initial-scale=1, width=device-width">
+    <title>View Information</title>
+  </head>
+
+  <body background="/static/bg.jpg">
+    <h2><center><b style="font-size:20px;color:rgb(223, 161, 54)">You selected {{ analysis_type }} to analyze.</b></center></h2>
+    <br>
+    <br>
+    <center><b style="font-size:20px;color:rgb(233, 163, 41)">The results for analyzing {{ analysis_type }} is as follows</b></center>
+      <center>
+        <img src="{{fp}}">
+      <br>
+      {{ tc }}<br>
+      {{ mc }}<br>
+      {{ fc }}<br>  
+      </center>> 
+      <br>
+      <br>
+      <b style="font-size:20px;color:rgb(151, 106, 28)"><a href="/">Click Here to Return Home</a></b>
+  </body>
+</html>

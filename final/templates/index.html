@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" name="viewport" content="initial-scale=1, width=device-width">
+        <title>Ventilator Pressure Data Analysis Interface</title>
+    </head>
+    <body background="/static/bg.jpg">
+    
+
+
+
+
+    <p>
+        <h2><center style="font-size:50px;color:hsla(38,80%,60%)">Welcome to Ventilator Pressure Data Analysis!<img src={{gif}} height="80"> </center></h2>
+    </p>
+        <center><b style="font-size:20px;color:rgb(214, 202, 31)">The dataset credits to <a href=" https://www.kaggle.com/c/ventilator-pressure-prediction/data">Kaggle.</a> </b></center>
+        <br>
+        <a href=" https://www.kaggle.com/c/ventilator-pressure-prediction/data">
+            <center><img src={{img}} height="200" width="800" style="border:5px solid rgb(154, 163, 204)"></center>
+        </a>
+    
+        <br>
+       <b style="font-size:20px;color:rgb(151, 106, 28)">Please choose from below items to generate and view analysis.</b>
+        <br>
+        <br>
+        <form action="/info" method="get">
+            <select name="Actions">
+                <option value="" disabled selected>Select From Below</option>
+                {% for i in analysis_options %}
+                    <option>{{ i }}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Generate and View">
+        </form>
+        <p>
+    
+</html>
